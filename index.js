@@ -68,3 +68,5 @@ bot.onText(/\/bookmark/, (msg, match) => {
        'URL has been successfully saved!',
    );
 });
+
+bot.on("polling_error", (err) => console.log(err));

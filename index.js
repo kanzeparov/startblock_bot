@@ -1,6 +1,6 @@
 var config = require('./config.json');
 var TelegramBot = require('node-telegram-bot-api');
-var cron = require('node-cron
+var cron = require('node-cron');
 const Sequelize = require('sequelize');
 const DATABASE_URL = 'postgres://postgres:postgres@localhost:5432/monitoring';
 const database = new Sequelize(DATABASE_URL);

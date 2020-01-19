@@ -146,7 +146,8 @@ bot.onText(/\/г (.+) ч (.+)/, function (msg, match) {
 
 bot.onText(/\/remind/, function (msg, match) {
     var userId = msg.from.id;
-    bot.sendMessage(userId, 'Привет, в 22 00 не забудь про статус');
+      var today = new Date();
+    bot.sendMessage(userId, 'Привет, в 22 00 не забудь про статус ' + today);
     cron.schedule('0 19 * * *', () => {
       bot.sendMessage(userId, 'статус 1 Что я делал сегодня? 2 Что планирую завтра? 3 Какие проблемы возникают?' + date);
     });

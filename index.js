@@ -12,21 +12,29 @@ var bot = new TelegramBot(token, {polling: true});
 
 bot.onText(/напомни/, function (msg, match) {
     var userId = msg.from.id;
+      bot.sendMessage(userId, 'Отлично! Я обязательно напомню, если не сдохну :)' + date);
     cron.schedule('0 19 * * *', () => {
       bot.sendMessage(userId, 'Отлично! Я обязательно напомню, если не сдохну :)' + date);
     });
 });
 
 bot.onText(/\/start_test/, function (msg, match) {
+  var userId = msg.from.id;
+    bot.sendMessage(userId, 'Отлично! Я обязательно напомню, если не сдохну :)' + date);
   newQuestion(msg);
 });
 
 bot.onText(/\/добавить_работу (.+)/, function (msg, match) {
-  newQuestion(msg);
+  var userId = msg.from.id;
+    bot.sendMessage(userId, 'Отлично! Я обязательно напомню, если не сдохну :)' + date);
+
+  //newQuestion(msg);
 });
 
 bot.onText(/\/показать_работы/, function (msg, match) {
   var userId = msg.from.id;
+    bot.sendMessage(userId, 'Отлично! Я обязательно напомню, если не сдохну :)' + date);
+
   var info_job = taskDB.findAll({
   attributes: ['name']
 });
@@ -34,7 +42,10 @@ bot.onText(/\/показать_работы/, function (msg, match) {
 });
 
 bot.onText(/\/удалить_работу (.+)/, function (msg, match) {
-  newQuestion(msg);
+  var userId = msg.from.id;
+    bot.sendMessage(userId, 'Отлично! Я обязательно напомню, если не сдохну :)' + date);
+
+  //ewQuestion(msg);
 });
 
 

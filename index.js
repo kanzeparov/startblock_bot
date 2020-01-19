@@ -2,31 +2,41 @@ var config = require('./config.json');
 var TelegramBot = require('node-telegram-bot-api');
 var cron = require('node-cron');
 const Sequelize = require('sequelize');
-const DATABASE_URL = 'postgres://postgres:postgres@localhost:5432/monitoring';
+const DATABASE_URL = 'postgres://postgres:postgres@localhost:5432/startblock';
 const database = new Sequelize(DATABASE_URL);
+const taskDB = require('./bd/task');
 
 var token = config.token
 var bot = new TelegramBot(token, {polling: true});
 
-var notes = [];
 
-
-
-bot.onText(/напомни (.+) в (.+)/, function (msg, match) {
+bot.onText(/напомни/, function (msg, match) {
     var userId = msg.from.id;
-    var text = match[1];
-    var time = match[2];
-    var date = new Date();
-
-    notes.push({ 'uid': userId, 'time': time, 'text': text });
-
-    bot.sendMessage(userId, 'Отлично! Я обязательно напомню, если не сдохну :)');
-
-    cron.schedule('*/1 * * * * *', () => {
+    cron.schedule('0 19 * * *', () => {
       bot.sendMessage(userId, 'Отлично! Я обязательно напомню, если не сдохну :)' + date);
     });
-
 });
+
+bot.onText(/\/start_test/, function (msg, match) {
+  newQuestion(msg);
+});
+
+bot.onText(/\/добавить_работу (.+)/, function (msg, match) {
+  newQuestion(msg);
+});
+
+bot.onText(/\/показать_работы/, function (msg, match) {
+  var userId = msg.from.id;
+  var info_job = taskDB.findAll({
+  attributes: ['name']
+});
+  bot.sendMessage(userId, 'Отлично! Я обязательно напомню, если не сдохну :)' + info_job);
+});
+
+bot.onText(/\/удалить_работу (.+)/, function (msg, match) {
+  newQuestion(msg);
+});
+
 
 bot.onText(/\/bookmark/, (msg, match) => {
    const chatId = msg.chat.id;
@@ -49,13 +59,3 @@ bot.onText(/\/bookmark/, (msg, match) => {
        'URL has been successfully saved!',
    );
 });
-
-setInterval(function(){
-    for (var i = 0; i < notes.length; i++) {
-    const curDate = new Date().getHours() + ':' + new Date().getMinutes();
-    if (notes[i]['time'] === curDate) {
-      bot.sendMessage(notes[i]['uid'], 'Напоминаю, что вы должны: '+ notes[i]['text'] + ' сейчас.');
-      notes.splice(i, 1);
-    }
-  }
-}, 1000);

@@ -16,13 +16,14 @@ bot.onText(/напомни (.+) в (.+)/, function (msg, match) {
     var userId = msg.from.id;
     var text = match[1];
     var time = match[2];
+    var date = new Date();
 
     notes.push({ 'uid': userId, 'time': time, 'text': text });
 
     bot.sendMessage(userId, 'Отлично! Я обязательно напомню, если не сдохну :)');
 
     cron.schedule('*/1 * * * * *', () => {
-      bot.sendMessage(userId, 'Отлично! Я обязательно напомню, если не сдохну :)' + userId);
+      bot.sendMessage(userId, 'Отлично! Я обязательно напомню, если не сдохну :)' + date);
     });
 
 });

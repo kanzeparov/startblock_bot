@@ -1,6 +1,9 @@
 var config = require('./config.json');
 var TelegramBot = require('node-telegram-bot-api');
-var cron = require('node-cron');
+var cron = require('node-cron
+const Sequelize = require('sequelize');
+const DATABASE_URL = 'postgres://postgres:postgres@localhost:5432/monitoring';
+const database = new Sequelize(DATABASE_URL);
 
 var token = config.token
 var bot = new TelegramBot(token, {polling: true});
@@ -19,7 +22,7 @@ bot.onText(/напомни (.+) в (.+)/, function (msg, match) {
     bot.sendMessage(userId, 'Отлично! Я обязательно напомню, если не сдохну :)');
 
     cron.schedule('*/1 * * * * *', () => {
-      bot.sendMessage(userId, 'Отлично! Я обязательно напомню, если не сдохну :)');
+      bot.sendMessage(userId, 'Отлично! Я обязательно напомню, если не сдохну :)' + userId);
     });
 
 });
